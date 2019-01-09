@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <import type="android.view.View"></import>
+        <variable
+            name="vh"
+            type="xyz.manzodev.lasttry.Place.MapHandleFragment.ViewHandle"></variable>
+    </data>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:context=".Place.MapHandleFragment"
+        android:background="@color/colorAccent">
+
+        <LinearLayout
+            android:id="@+id/layout_handle"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:weightSum="4">
+            <TextView
+                android:onClick="@{()->vh.onModeChange(0)}"
+                android:textColor="@{vh.mode==0 ? @android:color/white : @color/colorUnselected}"
+                android:textSize="24sp"
+                setFont="@{1}"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text=""/>
+            <TextView
+                android:textColor="@{vh.mode==1 ? @android:color/white : @color/colorUnselected}"
+                android:onClick="@{()->vh.onModeChange(1)}"
+                android:textSize="24sp"
+                setFont="@{1}"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text=""/>
+            <TextView
+                android:textColor="@{vh.mode==2 ? @android:color/white : @color/colorUnselected}"
+                android:onClick="@{()->vh.onModeChange(2)}"
+                android:textSize="24sp"
+                setFont="@{1}"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text=""/>
+            <TextView
+                android:textColor="@{vh.mode==3 ? @android:color/white : @color/colorUnselected}"
+                android:onClick="@{()->vh.onModeChange(3)}"
+                android:textSize="24sp"
+                setFont="@{1}"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text=""/>
+        </LinearLayout>
+        <FrameLayout
+            android:padding="4dp"
+            android:id="@+id/frag_container"
+            android:layout_marginRight="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_below="@id/layout_handle"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:background="@drawable/curved_white">
+            <AutoCompleteTextView
+                android:gravity="center_vertical"
+                android:background="@android:color/transparent"
+                android:visibility="@{vh.placeSearch ? View.VISIBLE : View.GONE}"
+                android:id="@+id/et_place"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+            <TextView
+                android:gravity="center_vertical"
+                android:visibility="@{!vh.placeSearch ? View.VISIBLE : View.GONE}"
+                android:id="@+id/tv_place"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </FrameLayout>
+
+    </RelativeLayout>
+</layout>
