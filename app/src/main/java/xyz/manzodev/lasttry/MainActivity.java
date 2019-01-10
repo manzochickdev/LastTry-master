@@ -5,20 +5,23 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
+
+import java.util.ArrayList;
 
 import xyz.manzodev.lasttry.AddEdit.AddFragment;
 import xyz.manzodev.lasttry.AddEdit.InfoVM;
+import xyz.manzodev.lasttry.AddEdit.RelationshipVM;
 import xyz.manzodev.lasttry.Dump.DBDataFragment;
 import xyz.manzodev.lasttry.Model.Address;
 import xyz.manzodev.lasttry.Model.Model;
+import xyz.manzodev.lasttry.Model.Relation;
+import xyz.manzodev.lasttry.Observer.Broadcaster;
 import xyz.manzodev.lasttry.People.PeopleFragment;
 import xyz.manzodev.lasttry.Place.PlaceViewFragment;
 import xyz.manzodev.lasttry.Relations.RelationsFragment;
 import xyz.manzodev.lasttry.Utils.FileUtils;
 import xyz.manzodev.lasttry.Utils.ImagePickerFragment;
-import xyz.manzodev.lasttry.Utils.Req;
 import xyz.manzodev.lasttry.Utils.Search.PersonSearchFragment;
 import xyz.manzodev.lasttry.Utils.SearchBottom.SearchBottomFragment;
 
@@ -107,20 +110,36 @@ public class MainActivity extends AppCompatActivity implements IMainActivity,Bot
     }
 
     @Override
-    public void onSavePerson(InfoVM infoVM, Bitmap bitmap) {
+    public void onSavePerson(InfoVM infoVM, ArrayList<Relation> relations, Bitmap bitmap) {
         int id = Model.createId();
         Model model = infoVM.getModel();
+        model.id = id;
         databaseHandle.addPerson(model,id);
 
         Address address = infoVM.getAddress();
         if (address!=null) databaseHandle.addAddress(address,id);
         if (bitmap!=null) FileUtils.getInstance(MainActivity.this).saveBitmap(id,bitmap);
+
+        for (Relation r : relations){
+            databaseHandle.addRelation(model,r.model,r.relationship);
+        }
+        onBackPressed();
+    }
+
+    RelationshipVM.OnDataListener relavm;
+    @Override
+    public void getRelationshipPicker(RelationshipVM.OnDataListener onDataListener, ArrayList<Integer> listId) {
+        this.relavm = onDataListener;
+        Bundle bundle = new Bundle();
+        bundle.putIntegerArrayList("listId",listId);
+        SearchBottomFragment searchBottomFragment = new SearchBottomFragment();
+        searchBottomFragment.setArguments(bundle);
+        searchBottomFragment.show(getSupportFragmentManager(),SearchBottomFragment.class.getSimpleName());
     }
 
     @Override
-    public void getRelationshipPicker() {
-        SearchBottomFragment searchBottomFragment = new SearchBottomFragment();
-        searchBottomFragment.show(getSupportFragmentManager(),SearchBottomFragment.class.getSimpleName());
+    public void onRelationshipResult(Relation relation) {
+        relavm.onRelationshipBack(relation);
     }
 
 
@@ -159,5 +178,14 @@ public class MainActivity extends AppCompatActivity implements IMainActivity,Bot
             AddFragment addFragment = (AddFragment) getSupportFragmentManager().findFragmentByTag(AddFragment.class.getSimpleName());
             addFragment.setProfileImage(bitmap);
         }
+    }
+
+    @Override
+    public void notifyDBChange() {
+        Broadcaster broadcaster = new Broadcaster();
+        PeopleFragment peopleFragment = (PeopleFragment) getSupportFragmentManager().findFragmentByTag(PeopleFragment.class.getSimpleName());
+        if (peopleFragment!=null) broadcaster.addObserver(peopleFragment);
+
+        broadcaster.updateModel(-1,MainActivity.this);
     }
 }

@@ -2,48 +2,40 @@
 <layout>
     <data>
         <variable
-            name="rela"
-            type="xyz.manzodev.lasttry.Model.Relation"></variable>
+            name="model"
+            type="xyz.manzodev.lasttry.Model.Model"></variable>
     </data>
     <RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+        xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:padding="4dp"
         android:id="@+id/container"
-        android:layout_marginTop="12dp"
-        android:padding="4dp">
+        android:layout_margin="4dp">
         <de.hdodenhof.circleimageview.CircleImageView
             android:layout_centerHorizontal="true"
-            setProfileImage="@{rela.model.id}"
+            setProfileImage="@{model.id}"
             android:id="@+id/civ_profile"
             android:src="@drawable/image_holder"
             android:layout_width="@dimen/civ"
             android:layout_height="@dimen/civ" />
         <TextView
+            android:gravity="center_horizontal"
             android:maxLines="2"
             android:id="@+id/tv_name"
             android:textSize="12sp"
-            android:text="@{rela.model.name}"
+            android:text="@{model.name}"
             android:layout_marginTop="8dp"
             android:layout_centerHorizontal="true"
             android:layout_below="@id/civ_profile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <TextView
-            android:padding="4dp"
-            android:background="@drawable/curved_accent"
             android:textSize="10sp"
-            android:textColor="@color/colorWhite"
+            android:textColor="@android:color/darker_gray"
             android:layout_marginTop="-4dp"
-            android:text="@{rela.relationship}"
+            android:text="@{model.dispRela}"
             android:layout_centerHorizontal="true"
             android:layout_below="@id/tv_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <ImageView
-            android:id="@+id/iv_remove"
-            android:layout_alignParentRight="true"
-            android:tint="@color/colorAccent"
-            android:src="@drawable/ic_remove_circle_black_24dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </RelativeLayout>

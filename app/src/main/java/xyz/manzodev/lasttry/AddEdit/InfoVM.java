@@ -33,7 +33,6 @@ public class InfoVM extends BaseObservable {
     public InfoVM(Context context) {
         this.context = context;
         this.model = new Model();
-        this.address = new Address();
     }
 
     public void getPlacePicker(){

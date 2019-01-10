@@ -12,8 +12,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 import xyz.manzodev.lasttry.IMainActivity;
-import xyz.manzodev.lasttry.Model.Model;
+import xyz.manzodev.lasttry.Model.Relation;
 import xyz.manzodev.lasttry.R;
 import xyz.manzodev.lasttry.databinding.FragmentAddBinding;
 
@@ -42,16 +44,17 @@ public class AddFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 InfoVM infoVM = fragmentAddBinding.addeditLayoutInfo.getVm();
+                ArrayList<Relation> relations = fragmentAddBinding.addeditLayoutRelationship.getVm().getRelationshipData();
                 if (infoVM.model.name==null || infoVM.model.name.trim().length()==0){
                     Toast.makeText(context, "Name can not be empty", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if (isImageProfileChange){
                     Bitmap bitmap =((BitmapDrawable) fragmentAddBinding.civProfile.getDrawable()).getBitmap();
-                    ((IMainActivity)context).onSavePerson(infoVM,bitmap);
+                    ((IMainActivity)context).onSavePerson(infoVM, relations, bitmap);
 
                 }
-                else  ((IMainActivity)context).onSavePerson(infoVM,null);
+                else  ((IMainActivity)context).onSavePerson(infoVM,relations,null);
             }
         });
         return fragmentAddBinding.getRoot();

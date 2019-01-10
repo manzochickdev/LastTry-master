@@ -12,28 +12,36 @@ import java.util.ArrayList;
 
 import xyz.manzodev.lasttry.Model.Model;
 import xyz.manzodev.lasttry.R;
-import xyz.manzodev.lasttry.databinding.PeopleLayoutSubBinding;
+import xyz.manzodev.lasttry.databinding.SearchBottomLayoutItemBinding;
 
 public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     ArrayList<Model> models;
     Context context;
+    SearchBottomFragment.OnDataListener onDataListener;
 
-    public Adapter(ArrayList<Model> models, Context context) {
+    public Adapter(ArrayList<Model> models, Context context, SearchBottomFragment.OnDataListener onDataListener) {
         this.models = models;
         this.context = context;
+        this.onDataListener = onDataListener;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(context).inflate(R.layout.people_layout_sub,viewGroup,false);
+        View view = LayoutInflater.from(context).inflate(R.layout.search_bottom_layout_item,viewGroup,false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-        viewHolder.peopleLayoutSubBinding.setModel(models.get(i));
-        viewHolder.peopleLayoutSubBinding.executePendingBindings();
+    public void onBindViewHolder(@NonNull ViewHolder viewHolder, final int i) {
+        viewHolder.searchBottomLayoutItemBinding.setModel(models.get(i));
+        viewHolder.searchBottomLayoutItemBinding.container.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onDataListener.onModelBack(models.get(i));
+            }
+        });
+        viewHolder.searchBottomLayoutItemBinding.executePendingBindings();
     }
 
     @Override
@@ -42,10 +50,10 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     }
 
     protected class ViewHolder extends RecyclerView.ViewHolder {
-        PeopleLayoutSubBinding peopleLayoutSubBinding;
+        SearchBottomLayoutItemBinding searchBottomLayoutItemBinding;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            peopleLayoutSubBinding = DataBindingUtil.bind(itemView);
+            searchBottomLayoutItemBinding = DataBindingUtil.bind(itemView);
         }
     }
 }

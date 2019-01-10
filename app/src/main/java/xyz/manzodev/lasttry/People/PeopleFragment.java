@@ -14,18 +14,21 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
+import xyz.manzodev.lasttry.DatabaseHandle;
 import xyz.manzodev.lasttry.Dump.DumpData;
 import xyz.manzodev.lasttry.IMainActivity;
 import xyz.manzodev.lasttry.Model.Model;
+import xyz.manzodev.lasttry.Observer.Observer;
 import xyz.manzodev.lasttry.R;
 import xyz.manzodev.lasttry.databinding.FragmentPeopleBinding;
 
 import static xyz.manzodev.lasttry.Utils.Req.TAG;
 
-public class PeopleFragment extends Fragment {
+public class PeopleFragment extends Fragment implements Observer {
     FragmentPeopleBinding fragmentPeopleBinding;
     ArrayList<Model> models;
     Context context;
+    MainAdapter mainAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -35,9 +38,6 @@ public class PeopleFragment extends Fragment {
         fragmentPeopleBinding = DataBindingUtil.inflate(inflater,R.layout.fragment_people, container, false);
 
         getData();
-        MainAdapter mainAdapter = new MainAdapter(models,context);
-        fragmentPeopleBinding.rvPeople.setAdapter(mainAdapter);
-        fragmentPeopleBinding.rvPeople.setLayoutManager(new LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false));
 
         fragmentPeopleBinding.btnCheck.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,7 +56,14 @@ public class PeopleFragment extends Fragment {
     }
 
     void getData(){
-        models = DumpData.getModelData();
+        models = DatabaseHandle.getInstance(context).getAllPerson();
+        mainAdapter = new MainAdapter(models,context);
+        fragmentPeopleBinding.rvPeople.setAdapter(mainAdapter);
+        fragmentPeopleBinding.rvPeople.setLayoutManager(new LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false));
     }
 
+    @Override
+    public void onModelUpdate(int id, Context context) {
+        getData();
+    }
 }

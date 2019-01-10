@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import xyz.manzodev.lasttry.BR;
 import xyz.manzodev.lasttry.DatabaseHandle;
 import xyz.manzodev.lasttry.IMainActivity;
+import xyz.manzodev.lasttry.Model.Model;
 import xyz.manzodev.lasttry.Model.Relation;
 import xyz.manzodev.lasttry.Utils.Relationship;
 
@@ -26,6 +27,31 @@ public class RelationshipVM extends BaseObservable {
         public void onAddRequest() {
             onAddRelationship();
         }
+
+        @Override
+        public void onRemoveRequest(Relation r) {
+            onDeleteRelationship(r);
+        }
+
+        Relation holder;
+        @Override
+        public void onRelationshipPicker(Relation relation) {
+            ArrayList<Integer> listId = new ArrayList<>();
+            for (Relation r : relations){
+                if (r.model!=null) listId.add(r.model.id);
+            }
+            holder = relation;
+            ((IMainActivity)context).getRelationshipPicker(this,listId);
+        }
+
+        @Override
+        public void onRelationshipBack(Relation relation) {
+            if (relation.model!=null) holder.model = relation.model;
+            if (relation.relationship!=null) holder.relationship = relation.relationship;
+            notifyPropertyChanged(BR.relations);
+            relationshipAdapter.notifyDataSetChanged();
+        }
+
     };
 
     public RelationshipVM(int id, Context context) {
@@ -48,19 +74,24 @@ public class RelationshipVM extends BaseObservable {
         relationshipAdapter.notifyDataSetChanged();
     }
 
-    public void onDeleteRelationship(int pos){
-        relations.remove(pos);
+    public void onDeleteRelationship(Relation r){
+        //relations.remove(pos);
+        relations.remove(r);
         notifyPropertyChanged(BR.relations);
         relationshipAdapter.notifyDataSetChanged();
-    }
-
-    public void getRelationshipPicker(){
-        ((IMainActivity) context).getRelationshipPicker();
     }
 
     @Bindable
     public ArrayList<Relation> getRelations() {
         return relations;
+    }
+
+    public ArrayList<Relation> getRelationshipData(){
+        ArrayList<Relation> data = new ArrayList<>();
+        for (Relation r : relations){
+            if (r.model!=null && r.relationship!=null) data.add(r);
+        }
+        return data;
     }
 
     public RelationshipAdapter getRelationshipAdapter() {
@@ -70,5 +101,8 @@ public class RelationshipVM extends BaseObservable {
 
     public interface OnDataListener{
         void onAddRequest();
+        void onRemoveRequest(Relation r);
+        void onRelationshipPicker(Relation relation);
+        void onRelationshipBack(Relation relation);
     }
 }

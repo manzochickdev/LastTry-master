@@ -81,6 +81,7 @@ public class DatabaseHandle extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
         String q = "insert into people values("+id+",'"+name+"','"+dispRela+"');";
         db.execSQL(q);
+        notifyDBChange();
     }
 
     public void removePerson(int id){
@@ -112,9 +113,10 @@ public class DatabaseHandle extends SQLiteOpenHelper {
 
     //todo relative table
 
-    public void addRelation(Model m1,Model m2,int relation){
+    public void addRelation(Model m1,Model m2,String rela){
         //todo if rela = 4 , add wife
         //rela = 2,0 , add son's mother
+        int relation = Relationship.convertRelationshipInt(rela);
         SQLiteDatabase db = getWritableDatabase();
         String q = "insert into relative values ("+m1.getId()+","+ m2.getId()+",'"+m2.getName()+"',"+relation+")";
         String q2 = "insert into relative values ("+m2.getId()+","+ m1.getId()+",'"+m1.getName()+"',"+(2-relation)+")";
@@ -200,6 +202,10 @@ public class DatabaseHandle extends SQLiteOpenHelper {
             modelAddresses.add(new Address(id,mAddress,new LatLng(latitude,longitude)));
         }
         return modelAddresses;
+    }
+
+    void notifyDBChange(){
+        ((IMainActivity) context).notifyDBChange();
     }
 
 

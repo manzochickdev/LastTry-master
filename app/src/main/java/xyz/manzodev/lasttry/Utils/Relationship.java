@@ -22,4 +22,7 @@ public class Relationship {
         return relationship.get(i);
     }
 
+    public static ArrayList<String> getRelationship() {
+        return relationship;
+    }
 }

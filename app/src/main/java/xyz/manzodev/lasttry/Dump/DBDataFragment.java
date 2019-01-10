@@ -53,6 +53,9 @@ public class DBDataFragment extends Fragment implements View.OnClickListener {
             case R.id.rela:
                 break;
             case R.id.address:
+                ArrayList<Address> addresses = databaseHandle.getAllAddress();
+                adapter = new Adapter(null,addresses,null,getContext());
+                setAdapter(adapter);
                 break;
             case R.id.detail:
                 break;

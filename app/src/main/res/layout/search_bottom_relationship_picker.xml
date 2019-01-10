@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <variable
+            name="list"
+            type="java.util.ArrayList&lt;String>"></variable>
+        <variable
+            name="clicked"
+            type="Integer"></variable>
+        <variable
+            name="onDataListener"
+            type="xyz.manzodev.lasttry.Utils.SearchBottom.SearchBottomFragment.OnDataListener"></variable>
+    </data>
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="4">
+        <TextView
+            android:padding="4dp"
+            android:gravity="center"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:background="@{clicked==0 ? @drawable/curved_accent : @drawable/curved_search_bar}"
+            android:textColor="@{clicked==0 ? @color/colorWhite : @color/colorAccent}"
+            android:onClick="@{()->onDataListener.onRelationshipBack(list.get(0))}"
+            android:text="@{list.get(0)}"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:padding="4dp"
+            android:gravity="center"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:background="@{clicked==1 ? @drawable/curved_accent : @drawable/curved_search_bar}"
+            android:textColor="@{clicked==1 ? @color/colorWhite : @color/colorAccent}"
+            android:onClick="@{()->onDataListener.onRelationshipBack(list.get(1))}"
+            android:text="@{list.get(1)}"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:padding="4dp"
+            android:gravity="center"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:background="@{clicked==2 ? @drawable/curved_accent : @drawable/curved_search_bar}"
+            android:textColor="@{clicked==2 ? @color/colorWhite : @color/colorAccent}"
+            android:onClick="@{()->onDataListener.onRelationshipBack(list.get(2))}"
+            android:text="@{list.get(2)}"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:padding="4dp"
+            android:gravity="center"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:background="@{clicked==3 ? @drawable/curved_accent : @drawable/curved_search_bar}"
+            android:textColor="@{clicked==3 ? @color/colorWhite : @color/colorAccent}"
+            android:onClick="@{()->onDataListener.onRelationshipBack(list.get(3))}"
+            android:text="@{list.get(3)}"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+</layout>

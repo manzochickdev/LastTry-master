@@ -45,10 +45,22 @@ public class RelationshipAdapter extends RecyclerView.Adapter<RelationshipAdapte
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull ViewHolder viewHolder, final int i) {
         switch (viewHolder.getItemViewType()){
             case 0:
                 viewHolder.item.setRela(relations.get(i));
+                viewHolder.item.ivRemove.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        onDataListener.onRemoveRequest(relations.get(i));
+                    }
+                });
+                viewHolder.item.container.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        onDataListener.onRelationshipPicker(relations.get(i));
+                    }
+                });
                 viewHolder.item.executePendingBindings();
                 break;
             case 1:
