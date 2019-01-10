@@ -8,5 +8,8 @@ public class Req {
     public static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 7592;
     public static final int PERMISSIONS_REQUEST_ENABLE_GPS = 7591;
 
+    public static final String PLACE_VIEW = "PLACE_VIEW";
+    public static final String PLACE_PICKER = "PLACE_PICKER";
+
     public static final String TAG = "XXX";
 }

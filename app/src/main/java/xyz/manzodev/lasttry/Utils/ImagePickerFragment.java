@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 
 import java.io.IOException;
 
+import xyz.manzodev.lasttry.IMainActivity;
 import xyz.manzodev.lasttry.R;
 import xyz.manzodev.lasttry.databinding.FragmentImagePickerBinding;
 
@@ -32,11 +33,14 @@ public class ImagePickerFragment extends BottomSheetDialogFragment {
     FragmentImagePickerBinding fragmentImagePickerBinding;
     boolean mCameraPermissionGranted=false;
     boolean mStoragePermissionGranted=false;
+    String targetFragment;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         fragmentImagePickerBinding = DataBindingUtil.inflate(inflater,R.layout.fragment_image_picker, container, false);
+        Bundle bundle = this.getArguments();
+        targetFragment = bundle.getString("target");
         fragmentImagePickerBinding.btnCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -206,7 +210,7 @@ public class ImagePickerFragment extends BottomSheetDialogFragment {
                     try{
                         Bundle extras = data.getExtras();
                         Bitmap bitma1p = (Bitmap) extras.get("data");
-                        //todo onbitmap back
+                        ((IMainActivity) getContext()).onImagePickerResult(bitma1p,targetFragment);
                         dismiss();
                     }
                     catch (Exception e){
@@ -218,7 +222,7 @@ public class ImagePickerFragment extends BottomSheetDialogFragment {
                     Uri uri = data.getData();
                     try {
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(),uri);
-                        //todo onbitmap back
+                        ((IMainActivity) getContext()).onImagePickerResult(bitmap,targetFragment);
                         dismiss();
                     }
                     catch (IOException e) { }

@@ -27,7 +27,7 @@ import xyz.manzodev.lasttry.databinding.MapLayoutPeopleSearchAutocompleteBinding
 public class MapHandleFragment extends Fragment {
     FragmentMapHandleBinding fragmentMapHandleBinding;
     IPlace iPlace;
-    Address address;
+    public Address address;
     Context context;
 
     @Override

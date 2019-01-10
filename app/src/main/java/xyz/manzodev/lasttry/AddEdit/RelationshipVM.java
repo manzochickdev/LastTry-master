@@ -14,8 +14,10 @@ import xyz.manzodev.lasttry.BR;
 import xyz.manzodev.lasttry.DatabaseHandle;
 import xyz.manzodev.lasttry.IMainActivity;
 import xyz.manzodev.lasttry.Model.Relation;
+import xyz.manzodev.lasttry.Utils.Relationship;
 
 public class RelationshipVM extends BaseObservable {
+    RelationshipAdapter relationshipAdapter;
     int id;
     ArrayList<Relation> relations;
     Context context;
@@ -30,23 +32,26 @@ public class RelationshipVM extends BaseObservable {
         this.id = id;
         this.context = context;
         this.relations = DatabaseHandle.getInstance(context).getAllRelation(id);
+        this.relationshipAdapter = new RelationshipAdapter(relations,onDataListener,context);
     }
 
     public RelationshipVM(Context context) {
         this.id = -1;
         this.context = context;
         this.relations = new ArrayList<>();
+        this.relationshipAdapter = new RelationshipAdapter(relations,onDataListener,context);
     }
 
     public void onAddRelationship(){
         relations.add(new Relation());
         notifyPropertyChanged(BR.relations);
-        notifyPropertyChanged(BR.vm);
+        relationshipAdapter.notifyDataSetChanged();
     }
 
     public void onDeleteRelationship(int pos){
         relations.remove(pos);
         notifyPropertyChanged(BR.relations);
+        relationshipAdapter.notifyDataSetChanged();
     }
 
     public void getRelationshipPicker(){
@@ -58,12 +63,10 @@ public class RelationshipVM extends BaseObservable {
         return relations;
     }
 
-    @BindingAdapter("setRelationshipAdapter")
-    public static void setRelationshipAdapter(RecyclerView view, RelationshipVM vm){
-        RelationshipAdapter relationshipAdapter = new RelationshipAdapter(vm.getRelations(),vm.onDataListener,view.getContext());
-        view.setAdapter(relationshipAdapter);
-        view.setLayoutManager(new GridLayoutManager(view.getContext(),3,LinearLayoutManager.VERTICAL,false));
+    public RelationshipAdapter getRelationshipAdapter() {
+        return relationshipAdapter;
     }
+
 
     public interface OnDataListener{
         void onAddRequest();

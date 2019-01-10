@@ -32,6 +32,14 @@ public class Model {
         return dispRela;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDispRela(String dispRela) {
+        this.dispRela = dispRela;
+    }
+
     public static int createId(){
         Calendar c = Calendar.getInstance();
         int id = (int) c.getTimeInMillis();

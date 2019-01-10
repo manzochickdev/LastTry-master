@@ -6,9 +6,11 @@
             type="xyz.manzodev.lasttry.Model.Relation"></variable>
     </data>
     <RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="wrap_content"
+        xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/container">
+        android:id="@+id/container"
+        android:layout_marginTop="12dp"
+        android:padding="4dp">
         <de.hdodenhof.circleimageview.CircleImageView
             android:layout_centerHorizontal="true"
             setProfileImage="@{rela.model.id}"
@@ -17,7 +19,6 @@
             android:layout_width="@dimen/civ"
             android:layout_height="@dimen/civ" />
         <TextView
-            android:gravity="center_horizontal"
             android:maxLines="2"
             android:id="@+id/tv_name"
             android:textSize="12sp"

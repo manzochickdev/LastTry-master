@@ -70,7 +70,7 @@ public class RelationshipAdapter extends RecyclerView.Adapter<RelationshipAdapte
 
     @Override
     public int getItemViewType(int position) {
-        if (position<relations.size()-1){
+        if (position<=relations.size()-1){
             return 0;
         }
         else return 1;

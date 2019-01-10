@@ -5,6 +5,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.ArrayList;
 
 import xyz.manzodev.lasttry.Model.Address;
@@ -68,9 +70,16 @@ public class DatabaseHandle extends SQLiteOpenHelper {
 
 
     //todo table people
-    public void addPerson(Model model){
+    public void addPerson(Model model,int id){
+        String name = model.getName().trim();
+        String dispRela;
+        if (model.dispRela==null) {
+            dispRela="";
+        }
+        else dispRela = model.dispRela.trim();
+
         SQLiteDatabase db = getWritableDatabase();
-        String q = "insert into people values("+model.getId()+",'"+model.getName()+"','"+model.getDispRela()+"');";
+        String q = "insert into people values("+id+",'"+name+"','"+dispRela+"');";
         db.execSQL(q);
     }
 
@@ -157,6 +166,41 @@ public class DatabaseHandle extends SQLiteOpenHelper {
     }
 
     //todo address table
+
+    public void addAddress(Address address,int id){
+        String q = "insert into address values ("+id+","+address.latlng.latitude+","+address.latlng.longitude+",'"+address.getTextAddr()+"');";
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(q);
+    }
+
+    public Address getAddress(int id){
+        SQLiteDatabase db = getReadableDatabase();
+        String q = "select * from address where main_id = "+id+";";
+        Cursor c = db.rawQuery(q,null);
+        while(c.moveToNext()){
+            double latitude = c.getDouble(c.getColumnIndex("latitude"));
+            double longitude = c.getDouble(c.getColumnIndex("longitude"));
+            String mAddress = c.getString(c.getColumnIndex("mAddress"));
+            Address address = new Address(mAddress,new LatLng(latitude,longitude));
+            return address;
+        }
+        return null;
+    }
+
+    public ArrayList<Address> getAllAddress(){
+        SQLiteDatabase db = getReadableDatabase();
+        ArrayList<Address> modelAddresses = new ArrayList<>();
+        String q = "select * from address";
+        Cursor c = db.rawQuery(q,null);
+        while(c.moveToNext()){
+            int id = c.getInt(c.getColumnIndex("main_id"));
+            double latitude = c.getDouble(c.getColumnIndex("latitude"));
+            double longitude = c.getDouble(c.getColumnIndex("longitude"));
+            String mAddress = c.getString(c.getColumnIndex("mAddress"));
+            modelAddresses.add(new Address(id,mAddress,new LatLng(latitude,longitude)));
+        }
+        return modelAddresses;
+    }
 
 
 }

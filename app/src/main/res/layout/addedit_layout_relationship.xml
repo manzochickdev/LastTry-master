@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <variable
             name="vm"
@@ -30,7 +30,10 @@
             android:layout_height="2dp"
             android:background="@color/colorAccent"></View>
         <android.support.v7.widget.RecyclerView
-            setRelationshipAdapter="@{vm}"
+            app:layoutManager="android.support.v7.widget.GridLayoutManager"
+            app:spanCount="3"
+            android:orientation="vertical"
+            android:adapter="@{vm.relationshipAdapter}"
             android:layout_below="@id/view_holder"
             android:id="@+id/rv_relationship"
             android:layout_width="match_parent"
