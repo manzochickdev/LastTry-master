@@ -96,6 +96,19 @@ public class DatabaseHandle extends SQLiteOpenHelper {
         db.execSQL(q3);
     }
 
+    public Model getPerson(int id){
+        SQLiteDatabase db = getReadableDatabase();
+        String q = "select * from people where id="+id+";";
+        Cursor c = db.rawQuery(q,null);
+        while (c.moveToNext()){
+            int mId = c.getInt(c.getColumnIndex("id"));
+            String mName = c.getString(c.getColumnIndex("name"));
+            String mDispRela = c.getString(c.getColumnIndex("dispRela"));
+            return new Model(mId,mName,mDispRela);
+        }
+        return null;
+    }
+
     public ArrayList<Model> getAllPerson(){
         ArrayList<Model> models = new ArrayList<>();
         SQLiteDatabase db = getReadableDatabase();
@@ -167,6 +180,23 @@ public class DatabaseHandle extends SQLiteOpenHelper {
         else return null;
     }
 
+    public ArrayList<Relation> getAllRelation(){
+        ArrayList<Relation> modelRelas = new ArrayList<>();
+        SQLiteDatabase db = getReadableDatabase();
+        String q = "select * from relative;";
+        Cursor c = db.rawQuery(q,null);
+        while(c.moveToNext()){
+            int mId = c.getInt(c.getColumnIndex("id"));
+            String mName = c.getString(c.getColumnIndex("name"));
+            int rela = c.getInt(c.getColumnIndex("rela"));
+            modelRelas.add(new Relation(Relationship.convertRelationshipString(rela),new Model(mId,mName)));
+        }
+        if (modelRelas.size()>0){
+            return modelRelas;
+        }
+        else return null;
+    }
+
     //todo address table
 
     public void addAddress(Address address,int id){
@@ -202,6 +232,33 @@ public class DatabaseHandle extends SQLiteOpenHelper {
             modelAddresses.add(new Address(id,mAddress,new LatLng(latitude,longitude)));
         }
         return modelAddresses;
+    }
+
+    public ArrayList<Address> getAllAddressDistinc(){
+        SQLiteDatabase db = getReadableDatabase();
+        ArrayList<Address> addresses = new ArrayList<>();
+        String q = "select distinct latitude,longitude,mAddress from address";
+        Cursor c = db.rawQuery(q,null);
+        while(c.moveToNext()){
+            double latitude = c.getDouble(c.getColumnIndex("latitude"));
+            double longitude = c.getDouble(c.getColumnIndex("longitude"));
+            String mAddress = c.getString(c.getColumnIndex("mAddress"));
+            addresses.add(new Address(mAddress,new LatLng(latitude,longitude)));
+        }
+        return addresses;
+    }
+
+    public ArrayList<Model> getNearby(LatLng position) {
+        ArrayList<Model> models = new ArrayList<>();
+        SQLiteDatabase db = getReadableDatabase();
+        String q = "select main_id from address where latitude="+position.latitude+" and longitude="+position.longitude+";";
+        Cursor c = db.rawQuery(q,null);
+        while (c.moveToNext()){
+            int id = c.getInt(c.getColumnIndex("main_id"));
+            models.add(getPerson(id));
+        }
+        if  (models.size()>0)return models;
+        return null;
     }
 
     void notifyDBChange(){

@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
+import xyz.manzodev.lasttry.IMainActivity;
 import xyz.manzodev.lasttry.Model.Model;
 import xyz.manzodev.lasttry.R;
 import xyz.manzodev.lasttry.databinding.PeopleLayoutSubBinding;
@@ -32,8 +33,14 @@ public class SubAdapter extends RecyclerView.Adapter<SubAdapter.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull ViewHolder viewHolder, final int i) {
         viewHolder.peopleLayoutSubBinding.setModel(models.get(i));
+        viewHolder.peopleLayoutSubBinding.container.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((IMainActivity) context).onEditPersonListener(models.get(i).getId());
+            }
+        });
         viewHolder.peopleLayoutSubBinding.executePendingBindings();
     }
 

@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import java.util.ArrayList;
 
 import xyz.manzodev.lasttry.AddEdit.AddFragment;
+import xyz.manzodev.lasttry.AddEdit.EditFragment;
 import xyz.manzodev.lasttry.AddEdit.InfoVM;
 import xyz.manzodev.lasttry.AddEdit.RelationshipVM;
 import xyz.manzodev.lasttry.Dump.DBDataFragment;
@@ -101,12 +102,43 @@ public class MainActivity extends AppCompatActivity implements IMainActivity,Bot
                 .commit();
     }
 
+
     @Override
     public void onAddPersonListener() {
         AddFragment addFragment = new AddFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.container,addFragment,AddFragment.class.getSimpleName())
                 .addToBackStack(AddFragment.class.getSimpleName())
                 .commit();
+    }
+
+    @Override
+    public void onEditPersonListener(int id) {
+        Bundle bundle = new Bundle();
+        bundle.putInt("id",id);
+        EditFragment editFragment = new EditFragment();
+        editFragment.setArguments(bundle);
+        getSupportFragmentManager().beginTransaction().add(R.id.container,editFragment,EditFragment.class.getSimpleName())
+                .addToBackStack(EditFragment.class.getSimpleName())
+                .commit();
+    }
+
+    @Override
+    public void onReloadEdit(int id) {
+        EditFragment editFrag = (EditFragment) getSupportFragmentManager().findFragmentByTag(EditFragment.class.getSimpleName());
+        getSupportFragmentManager().beginTransaction().remove(editFrag).commit();
+        Bundle bundle = new Bundle();
+        bundle.putInt("id",id);
+        EditFragment editFragment = new EditFragment();
+        editFragment.setArguments(bundle);
+        getSupportFragmentManager().beginTransaction().replace(R.id.container,editFragment,EditFragment.class.getSimpleName())
+                .addToBackStack(EditFragment.class.getSimpleName())
+                .commit();
+
+    }
+
+    @Override
+    public void onRemovePersonListener(int id) {
+
     }
 
     @Override
@@ -187,5 +219,10 @@ public class MainActivity extends AppCompatActivity implements IMainActivity,Bot
         if (peopleFragment!=null) broadcaster.addObserver(peopleFragment);
 
         broadcaster.updateModel(-1,MainActivity.this);
+    }
+
+    @Override
+    public void onBackListener() {
+        onBackPressed();
     }
 }

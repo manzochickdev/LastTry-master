@@ -19,12 +19,13 @@ public class RelationshipAdapter extends RecyclerView.Adapter<RelationshipAdapte
     ArrayList<Relation> relations;
     RelationshipVM.OnDataListener onDataListener;
     Context context;
+    boolean isEdit;
 
-    public RelationshipAdapter(ArrayList<Relation> relations, RelationshipVM.OnDataListener onDataListener, Context context) {
+    public RelationshipAdapter(ArrayList<Relation> relations, RelationshipVM.OnDataListener onDataListener, Context context, boolean isEdit) {
         this.relations = relations;
         this.onDataListener = onDataListener;
         this.context = context;
-
+        this.isEdit = isEdit;
     }
 
     @NonNull
@@ -77,7 +78,8 @@ public class RelationshipAdapter extends RecyclerView.Adapter<RelationshipAdapte
 
     @Override
     public int getItemCount() {
-        return relations.size()+1;
+        if (isEdit) return relations.size()+1;
+        return relations.size();
     }
 
     @Override
@@ -86,6 +88,11 @@ public class RelationshipAdapter extends RecyclerView.Adapter<RelationshipAdapte
             return 0;
         }
         else return 1;
+    }
+
+    public void setIsEdit() {
+        isEdit = true;
+        notifyDataSetChanged();
     }
 
     protected class ViewHolder extends RecyclerView.ViewHolder {
@@ -102,4 +109,8 @@ public class RelationshipAdapter extends RecyclerView.Adapter<RelationshipAdapte
             this.add = add;
         }
     }
+
+    //todo set tick + chinh view nearby fragment + search bottom fragment
+    //todo hoan thien edit
+    //todo inflate view
 }

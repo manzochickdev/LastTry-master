@@ -18,6 +18,7 @@ import xyz.manzodev.lasttry.Model.Relation;
 import xyz.manzodev.lasttry.Utils.Relationship;
 
 public class RelationshipVM extends BaseObservable {
+    boolean isEdit;
     RelationshipAdapter relationshipAdapter;
     int id;
     ArrayList<Relation> relations;
@@ -58,14 +59,17 @@ public class RelationshipVM extends BaseObservable {
         this.id = id;
         this.context = context;
         this.relations = DatabaseHandle.getInstance(context).getAllRelation(id);
-        this.relationshipAdapter = new RelationshipAdapter(relations,onDataListener,context);
+        if (this.relations==null) this.relations = new ArrayList<>();
+        isEdit = false;
+        this.relationshipAdapter = new RelationshipAdapter(relations,onDataListener,context,isEdit);
     }
 
     public RelationshipVM(Context context) {
         this.id = -1;
         this.context = context;
         this.relations = new ArrayList<>();
-        this.relationshipAdapter = new RelationshipAdapter(relations,onDataListener,context);
+        isEdit = true;
+        this.relationshipAdapter = new RelationshipAdapter(relations,onDataListener,context,isEdit);
     }
 
     public void onAddRelationship(){
@@ -84,6 +88,19 @@ public class RelationshipVM extends BaseObservable {
     @Bindable
     public ArrayList<Relation> getRelations() {
         return relations;
+    }
+
+    @Bindable
+    public boolean isEdit() {
+        return isEdit;
+    }
+
+    public void setEdit(boolean edit) {
+        isEdit = edit;
+        notifyPropertyChanged(BR.edit);
+        if (isEdit==true){
+            relationshipAdapter.setIsEdit();
+        }
     }
 
     public ArrayList<Relation> getRelationshipData(){

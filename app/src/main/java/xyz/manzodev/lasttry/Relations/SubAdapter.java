@@ -8,16 +8,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import xyz.manzodev.lasttry.Model.Model;
 import xyz.manzodev.lasttry.R;
 import xyz.manzodev.lasttry.databinding.RelationsLayoutSubBinding;
 
 public class SubAdapter extends RecyclerView.Adapter<SubAdapter.ViewHolder>{
     RelationsModel relationsModel;
     Context context;
+    RelationsFragment.OnDataListener onDataListener;
 
-    public SubAdapter(RelationsModel relationsModel, Context context) {
+    public SubAdapter(RelationsModel relationsModel, Context context, RelationsFragment.OnDataListener onDataListener) {
         this.relationsModel = relationsModel;
         this.context = context;
+        this.onDataListener = onDataListener;
     }
 
     @NonNull
@@ -29,6 +32,14 @@ public class SubAdapter extends RecyclerView.Adapter<SubAdapter.ViewHolder>{
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
+        final Model model = relationsModel.models.get(i);
+        viewHolder.relationsLayoutSubBinding.setModel(model);
+        viewHolder.relationsLayoutSubBinding.container.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onDataListener.onDataBack(model.getId());
+            }
+        });
         viewHolder.relationsLayoutSubBinding.executePendingBindings();
     }
 

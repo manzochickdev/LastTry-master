@@ -17,10 +17,12 @@ import xyz.manzodev.lasttry.databinding.RelationsLayoutMainBinding;
 public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
     ArrayList<RelationsModel> models;
     Context context;
+    RelationsFragment.OnDataListener onDataListener;
 
-    public MainAdapter(ArrayList<RelationsModel> models, Context context) {
+    public MainAdapter(ArrayList<RelationsModel> models, Context context, RelationsFragment.OnDataListener onDataListener) {
         this.models = models;
         this.context = context;
+        this.onDataListener = onDataListener;
     }
 
     @NonNull
@@ -32,7 +34,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-        SubAdapter subAdapter = new SubAdapter(models.get(i),context);
+        SubAdapter subAdapter = new SubAdapter(models.get(i),context,onDataListener);
         viewHolder.relationsLayoutMainBinding.rvPeopleItem.setAdapter(subAdapter);
         viewHolder.relationsLayoutMainBinding.rvPeopleItem.setLayoutManager(new LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false));
         viewHolder.relationsLayoutMainBinding.executePendingBindings();

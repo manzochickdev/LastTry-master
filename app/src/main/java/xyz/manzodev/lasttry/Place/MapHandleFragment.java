@@ -68,7 +68,7 @@ public class MapHandleFragment extends Fragment {
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     MapLayoutPeopleSearchAutocompleteBinding layout = DataBindingUtil.bind(view);
                     Address address = layout.getAddress();
-                    if (address!=null) iPlace.handleSearchData(address.latlng);
+                    if (address!=null) iPlace.handleSearchData(address);
                 }
             });
         }

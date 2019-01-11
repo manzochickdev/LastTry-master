@@ -5,6 +5,7 @@ import android.content.Context;
 
 import java.util.ArrayList;
 
+import xyz.manzodev.lasttry.DatabaseHandle;
 import xyz.manzodev.lasttry.Dump.DumpData;
 import xyz.manzodev.lasttry.Model.Model;
 import xyz.manzodev.lasttry.Observer.Observer;
@@ -16,7 +17,7 @@ public class PersonSearch implements Observer {
     ArrayList<Model> temp;
 
     public PersonSearch(Context context) {
-        models = getModels();
+        models = getData(context);
         temp = new ArrayList<>();
     }
 
@@ -40,8 +41,12 @@ public class PersonSearch implements Observer {
         return temp;
     }
 
+    public ArrayList<Model> getData(Context context) {
+        return DatabaseHandle.getInstance(context).getAllPerson();
+    }
+
     public ArrayList<Model> getModels() {
-        return DumpData.getModelData();
+        return models;
     }
 
     public PersonSearchDistinc distinc(ArrayList<Integer> listId){

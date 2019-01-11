@@ -13,6 +13,8 @@ import android.widget.Filter;
 import java.util.ArrayList;
 import java.util.List;
 
+import xyz.manzodev.lasttry.DatabaseHandle;
+import xyz.manzodev.lasttry.Model.Address;
 import xyz.manzodev.lasttry.Model.Model;
 import xyz.manzodev.lasttry.R;
 import xyz.manzodev.lasttry.Utils.PersonSearch;
@@ -41,7 +43,8 @@ public class PeopleSearchAdapter extends ArrayAdapter<Model> {
         MapLayoutPeopleSearchAutocompleteBinding mapLayoutPeopleSearchAutocompleteBinding = DataBindingUtil.bind(convertView);
         Model model = getItem(position);
         mapLayoutPeopleSearchAutocompleteBinding.setModel(model);
-        //todo getAddress
+        Address address = DatabaseHandle.getInstance(context).getAddress(model.id);
+        if (address!=null) mapLayoutPeopleSearchAutocompleteBinding.setAddress(address);
         return mapLayoutPeopleSearchAutocompleteBinding.getRoot();
     }
 

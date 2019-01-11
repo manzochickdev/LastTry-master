@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -21,19 +22,27 @@ public class PlaceViewFragment extends Fragment implements IPlace {
     FragmentPlaceViewBinding fragmentPlaceViewBinding;
     MapFragment mapFragment;
     MapHandleFragment mapHandleFragment;
+    String mode="";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         fragmentPlaceViewBinding = DataBindingUtil.inflate(inflater,R.layout.fragment_place_view, container, false);
         Bundle bundle = this.getArguments();
-        String mode = bundle.getString("mode");
+        if (bundle!=null) mode = bundle.getString("mode");
         if (mode.equals(Req.PLACE_PICKER)){
             fragmentPlaceViewBinding.setMode(true);
         }
-        else fragmentPlaceViewBinding.setMode(false);
+        else {
+            fragmentPlaceViewBinding.setMode(false);
+            fragmentPlaceViewBinding.bottomHolder.setVisibility(View.GONE);
+            NearbyFragment nearbyFragment = new NearbyFragment();
+            getChildFragmentManager().beginTransaction().replace(R.id.bottom_holder,nearbyFragment,NearbyFragment.class.getSimpleName()).commit();
+        }
 
-        mapFragment = (MapFragment) getChildFragmentManager().findFragmentById(R.id.map_fragment);
+        mapFragment = new MapFragment();
+        mapFragment.setArguments(bundle);
+        getChildFragmentManager().beginTransaction().replace(R.id.map_holder,mapFragment).commit();
         mapHandleFragment = (MapHandleFragment) getChildFragmentManager().findFragmentById(R.id.map_handle_fragment);
 
         fragmentPlaceViewBinding.btnOk.setOnClickListener(new View.OnClickListener() {
@@ -63,8 +72,27 @@ public class PlaceViewFragment extends Fragment implements IPlace {
     }
 
     @Override
-    public void handleSearchData(LatLng data) {
-        mapFragment.moveCamera(data,null);
+    public void handleSearchData(Address data) {
+        mapFragment.moveCamera(data.latlng,data.getTextAddr());
+        onLocationBack(data.latlng,data.getTextAddr());
+    }
+
+    @Override
+    public void showNearby(String title, LatLng position) {
+        fragmentPlaceViewBinding.bottomHolder.setVisibility(View.VISIBLE);
+        NearbyFragment nearbyFragment = (NearbyFragment) getChildFragmentManager().findFragmentByTag(NearbyFragment.class.getSimpleName());
+        nearbyFragment.showNearby(title,position);
+
+    }
+
+    @Override
+    public void hideNearby() {
+        fragmentPlaceViewBinding.bottomHolder.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void getDirection(LatLng latLng) {
+        mapFragment.getDirection(latLng);
     }
 
 }

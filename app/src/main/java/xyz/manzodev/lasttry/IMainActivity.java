@@ -19,6 +19,9 @@ public interface IMainActivity {
 
     //addedit
     void onAddPersonListener();
+    void onEditPersonListener(int id);
+    void onReloadEdit(int id);
+    void onRemovePersonListener(int id);
     void onSavePerson(InfoVM infoVM, ArrayList<Relation> relations, Bitmap bitmap);
 
     void getRelationshipPicker(RelationshipVM.OnDataListener onDataListener, ArrayList<Integer> listId);
@@ -33,4 +36,7 @@ public interface IMainActivity {
     void onImagePickerResult(Bitmap bitmap,String targetFragment);
 
     void notifyDBChange();
+
+    void onBackListener();
+
 }

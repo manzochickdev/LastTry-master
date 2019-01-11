@@ -5,38 +5,44 @@
             name="vm"
             type="xyz.manzodev.lasttry.AddEdit.RelationshipVM"></variable>
     </data>
-    <RelativeLayout
+    <android.support.v4.widget.NestedScrollView
         xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/curved_white">
-        <View
-            android:layout_margin="4dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:background="@android:color/transparent">
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:background="@color/colorWhite"></View>
-        <TextView
-            android:id="@+id/tv_title"
-            android:textColor="@color/colorAccent"
-            android:textSize="24sp"
-            android:padding="4dp"
-            android:layout_marginLeft="8dp"
-            android:text="Relationship"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-        <View
-            android:layout_below="@id/tv_title"
-            android:id="@+id/view_holder"
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="@color/colorAccent"></View>
-        <android.support.v7.widget.RecyclerView
-            app:layoutManager="android.support.v7.widget.GridLayoutManager"
-            app:spanCount="3"
-            android:orientation="vertical"
-            android:adapter="@{vm.relationshipAdapter}"
-            android:layout_below="@id/view_holder"
-            android:id="@+id/rv_relationship"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
-    </RelativeLayout>
+            android:layout_height="match_parent"
+            android:background="@drawable/curved_white">
+            <View
+                android:layout_margin="4dp"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:background="@color/colorWhite"></View>
+            <TextView
+                android:id="@+id/tv_title"
+                android:textColor="@color/colorAccent"
+                android:textSize="24sp"
+                android:padding="4dp"
+                android:layout_marginLeft="8dp"
+                android:text="Relationship"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <View
+                android:layout_below="@id/tv_title"
+                android:id="@+id/view_holder"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/colorAccent"></View>
+            <android.support.v7.widget.RecyclerView
+                app:layoutManager="android.support.v7.widget.GridLayoutManager"
+                app:spanCount="3"
+                android:orientation="vertical"
+                android:adapter="@{vm.relationshipAdapter}"
+                android:layout_below="@id/view_holder"
+                android:id="@+id/rv_relationship"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+        </RelativeLayout>
+    </android.support.v4.widget.NestedScrollView>
 </layout>

@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import xyz.manzodev.lasttry.DatabaseHandle;
 import xyz.manzodev.lasttry.Model.Address;
 import xyz.manzodev.lasttry.Model.Model;
+import xyz.manzodev.lasttry.Model.Relation;
 import xyz.manzodev.lasttry.R;
 import xyz.manzodev.lasttry.databinding.FragmentDbdataBinding;
 
@@ -51,6 +52,9 @@ public class DBDataFragment extends Fragment implements View.OnClickListener {
                 setAdapter(adapter);
                 break;
             case R.id.rela:
+                ArrayList<Relation> relations = databaseHandle.getAllRelation();
+                adapter = new Adapter(null,null,relations,getContext());
+                setAdapter(adapter);
                 break;
             case R.id.address:
                 ArrayList<Address> addresses = databaseHandle.getAllAddress();
