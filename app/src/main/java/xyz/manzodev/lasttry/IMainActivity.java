@@ -1,6 +1,7 @@
 package xyz.manzodev.lasttry;
 
 import android.graphics.Bitmap;
+import android.view.View;
 
 import java.util.ArrayList;
 
@@ -24,7 +25,7 @@ public interface IMainActivity {
     void onRemovePersonListener(int id);
     void onSavePerson(InfoVM infoVM, ArrayList<Relation> relations, Bitmap bitmap);
 
-    void getRelationshipPicker(RelationshipVM.OnDataListener onDataListener, ArrayList<Integer> listId);
+    void getRelationshipPicker(RelationshipVM.OnDataListener onDataListener, ArrayList<Integer> listId, Relation relation);
     void onRelationshipResult(Relation relation);
 
     //place
@@ -39,4 +40,5 @@ public interface IMainActivity {
 
     void onBackListener();
 
+    void getSummaryInfo(View view, int offset);
 }

@@ -34,20 +34,28 @@ public class SearchBottomFragment extends BottomSheetDialogFragment {
                              Bundle savedInstanceState) {
         fragmentSearchBottomBinding = DataBindingUtil.inflate(inflater,R.layout.fragment_search_bottom, container, false);
         Bundle bundle = this.getArguments();
+        int id=-1;
+        int relationship = -1;
         if (bundle!=null){
             listId = bundle.getIntegerArrayList("listId");
+            id = bundle.getInt("id");
+            relationship=bundle.getInt("relationship");
+
+            //todo continue
         }
         relation = new Relation();
         onDataListener = new OnDataListener() {
             @Override
             public void onModelBack(Model model) {
                 relation.model = model;
+                checkFinish();
             }
 
             @Override
             public void onRelationshipBack(String relationship) {
                 relation.relationship = relationship;
                 fragmentSearchBottomBinding.searchBottomRelationshipPicker.setClicked(Relationship.getRelationship().indexOf(relationship));
+                checkFinish();
             }
         };
         models = PersonSearch.getInstance(getContext()).distinc(listId).getModels();
@@ -55,6 +63,10 @@ public class SearchBottomFragment extends BottomSheetDialogFragment {
         fragmentSearchBottomBinding.rvPeople.setAdapter(adapter);
         handleLayoutRelationPicker();
         return fragmentSearchBottomBinding.getRoot();
+    }
+
+    private void checkFinish() {
+        if (relation.model!=null && relation.relationship!=null) dismiss();
     }
 
     private void handleLayoutRelationPicker() {
@@ -66,6 +78,14 @@ public class SearchBottomFragment extends BottomSheetDialogFragment {
     @Override
     public void onCancel(DialogInterface dialog) {
         super.onCancel(dialog);
+        if (relation!=null){
+            ((IMainActivity)getContext()).onRelationshipResult(relation);
+        }
+    }
+
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        super.onDismiss(dialog);
         if (relation!=null){
             ((IMainActivity)getContext()).onRelationshipResult(relation);
         }

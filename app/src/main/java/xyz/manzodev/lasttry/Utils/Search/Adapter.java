@@ -18,6 +18,7 @@ import xyz.manzodev.lasttry.databinding.PersonSearchLayoutItemBinding;
 public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     ArrayList<Model> models;
     Context context;
+    int clicked=-1;
     PersonSearchFragment.OnItemClickListener onItemClickListener;
 
     public Adapter(ArrayList<Model> models, Context context, PersonSearchFragment.OnItemClickListener onItemClickListener) {
@@ -37,10 +38,13 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, final int i) {
         final Model model = models.get(i);
         viewHolder.personSearchLayoutItemBinding.setModel(model);
+        viewHolder.personSearchLayoutItemBinding.setVisibility(clicked==model.getId());
         viewHolder.personSearchLayoutItemBinding.container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onItemClickListener.onItemClick(model);
+                clicked=model.getId();
+                notifyDataSetChanged();
             }
         });
         viewHolder.personSearchLayoutItemBinding.executePendingBindings();

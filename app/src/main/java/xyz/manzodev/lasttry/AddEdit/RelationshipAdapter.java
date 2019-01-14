@@ -59,6 +59,7 @@ public class RelationshipAdapter extends RecyclerView.Adapter<RelationshipAdapte
                 viewHolder.item.container.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        if (relations.get(i).model!=null && relations.get(i).relationship!=null) return;
                         onDataListener.onRelationshipPicker(relations.get(i));
                     }
                 });
@@ -110,7 +111,6 @@ public class RelationshipAdapter extends RecyclerView.Adapter<RelationshipAdapte
         }
     }
 
-    //todo set tick + chinh view nearby fragment + search bottom fragment
     //todo hoan thien edit
     //todo inflate view
 }

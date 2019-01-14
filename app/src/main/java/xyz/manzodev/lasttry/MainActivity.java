@@ -1,11 +1,17 @@
 package xyz.manzodev.lasttry;
 
+import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.PopupWindow;
 
 import java.util.ArrayList;
 
@@ -23,8 +29,11 @@ import xyz.manzodev.lasttry.Place.PlaceViewFragment;
 import xyz.manzodev.lasttry.Relations.RelationsFragment;
 import xyz.manzodev.lasttry.Utils.FileUtils;
 import xyz.manzodev.lasttry.Utils.ImagePickerFragment;
+import xyz.manzodev.lasttry.Utils.PersonSearch;
+import xyz.manzodev.lasttry.Utils.Relationship;
 import xyz.manzodev.lasttry.Utils.Search.PersonSearchFragment;
 import xyz.manzodev.lasttry.Utils.SearchBottom.SearchBottomFragment;
+import xyz.manzodev.lasttry.databinding.LayoutPopupSummaryInfoBinding;
 
 import static xyz.manzodev.lasttry.Utils.Req.PLACE_PICKER;
 
@@ -138,7 +147,7 @@ public class MainActivity extends AppCompatActivity implements IMainActivity,Bot
 
     @Override
     public void onRemovePersonListener(int id) {
-
+        databaseHandle.removePerson(id);
     }
 
     @Override
@@ -160,10 +169,12 @@ public class MainActivity extends AppCompatActivity implements IMainActivity,Bot
 
     RelationshipVM.OnDataListener relavm;
     @Override
-    public void getRelationshipPicker(RelationshipVM.OnDataListener onDataListener, ArrayList<Integer> listId) {
+    public void getRelationshipPicker(RelationshipVM.OnDataListener onDataListener, ArrayList<Integer> listId, Relation relation) {
         this.relavm = onDataListener;
         Bundle bundle = new Bundle();
         bundle.putIntegerArrayList("listId",listId);
+        if  (relation.model!=null) bundle.putInt("id",relation.model.id);
+        if (relation.relationship!=null) bundle.putInt("relationship", Relationship.convertRelationshipInt(relation.relationship));
         SearchBottomFragment searchBottomFragment = new SearchBottomFragment();
         searchBottomFragment.setArguments(bundle);
         searchBottomFragment.show(getSupportFragmentManager(),SearchBottomFragment.class.getSimpleName());
@@ -210,11 +221,16 @@ public class MainActivity extends AppCompatActivity implements IMainActivity,Bot
             AddFragment addFragment = (AddFragment) getSupportFragmentManager().findFragmentByTag(AddFragment.class.getSimpleName());
             addFragment.setProfileImage(bitmap);
         }
+        else if (targetFragment.equals(EditFragment.class.getSimpleName())){
+            EditFragment editFragment = (EditFragment) getSupportFragmentManager().findFragmentByTag(EditFragment.class.getSimpleName());
+            editFragment.setProfileImage(bitmap);
+        }
     }
 
     @Override
     public void notifyDBChange() {
         Broadcaster broadcaster = new Broadcaster();
+        broadcaster.addObserver(PersonSearch.getInstance(MainActivity.this));
         PeopleFragment peopleFragment = (PeopleFragment) getSupportFragmentManager().findFragmentByTag(PeopleFragment.class.getSimpleName());
         if (peopleFragment!=null) broadcaster.addObserver(peopleFragment);
 
@@ -224,5 +240,19 @@ public class MainActivity extends AppCompatActivity implements IMainActivity,Bot
     @Override
     public void onBackListener() {
         onBackPressed();
+    }
+
+    @Override
+    public void getSummaryInfo(View view, int offset) {
+        View layout = LayoutInflater.from(MainActivity.this).inflate(R.layout.layout_popup_summary_info,null,false);
+        LayoutPopupSummaryInfoBinding layoutPopupSummaryInfoBinding = DataBindingUtil.bind(layout);
+        layoutPopupSummaryInfoBinding.setId(0);
+        layoutPopupSummaryInfoBinding.civProfile.setX(view.getX()+offset);
+        layoutPopupSummaryInfoBinding.civProfile.setY(view.getY()-16);
+        PopupWindow popup = new PopupWindow(layout, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        popup.setOutsideTouchable(true);
+        popup.setFocusable(true);
+        popup.setBackgroundDrawable(new BitmapDrawable());
+        popup.showAsDropDown(view,0,-view.getHeight()+layout.getHeight());
     }
 }

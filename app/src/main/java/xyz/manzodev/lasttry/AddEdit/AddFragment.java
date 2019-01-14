@@ -43,21 +43,25 @@ public class AddFragment extends Fragment {
         fragmentAddBinding.tvOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                InfoVM infoVM = fragmentAddBinding.addeditLayoutInfo.getVm();
-                ArrayList<Relation> relations = fragmentAddBinding.addeditLayoutRelationship.getVm().getRelationshipData();
-                if (infoVM.model.name==null || infoVM.model.name.trim().length()==0){
-                    Toast.makeText(context, "Name can not be empty", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if (isImageProfileChange){
-                    Bitmap bitmap =((BitmapDrawable) fragmentAddBinding.civProfile.getDrawable()).getBitmap();
-                    ((IMainActivity)context).onSavePerson(infoVM, relations, bitmap);
-
-                }
-                else  ((IMainActivity)context).onSavePerson(infoVM,relations,null);
+                handleSave();
             }
         });
         return fragmentAddBinding.getRoot();
+    }
+
+    private void handleSave() {
+        InfoVM infoVM = fragmentAddBinding.addeditLayoutInfo.getVm();
+        ArrayList<Relation> relations = fragmentAddBinding.addeditLayoutRelationship.getVm().getRelationshipData();
+        if (infoVM.model.name==null || infoVM.model.name.trim().length()==0){
+            Toast.makeText(context, "Name can not be empty", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (isImageProfileChange){
+            Bitmap bitmap =((BitmapDrawable) fragmentAddBinding.civProfile.getDrawable()).getBitmap();
+            ((IMainActivity)context).onSavePerson(infoVM, relations, bitmap);
+
+        }
+        else  ((IMainActivity)context).onSavePerson(infoVM,relations,null);
     }
 
     public void setProfileImage(Bitmap profileImage) {

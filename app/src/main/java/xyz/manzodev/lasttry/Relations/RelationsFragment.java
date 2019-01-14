@@ -43,8 +43,8 @@ public class RelationsFragment extends Fragment {
         onDataListener = new OnDataListener() {
 
             @Override
-            public void onDataBack(int id) {
-                getRelation(id);
+            public void onDataBack(int id,View view) {
+                getRelation(id,view);
             }
         };
 
@@ -78,7 +78,7 @@ public class RelationsFragment extends Fragment {
         init(model.getId());
     }
 
-    private void getRelation(int id) {
+    private void getRelation(int id, View view) {
         int pos = getPosition(id)[1];
 
         if (relationsModels.get(pos).root==id){
@@ -212,6 +212,6 @@ public class RelationsFragment extends Fragment {
     }
 
     public interface OnDataListener{
-        void onDataBack(int id);
+        void onDataBack(int id,View view);
     }
 }

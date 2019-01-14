@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import xyz.manzodev.lasttry.IMainActivity;
 import xyz.manzodev.lasttry.Model.Model;
 import xyz.manzodev.lasttry.R;
 import xyz.manzodev.lasttry.databinding.RelationsLayoutSubBinding;
@@ -34,10 +35,12 @@ public class SubAdapter extends RecyclerView.Adapter<SubAdapter.ViewHolder>{
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         final Model model = relationsModel.models.get(i);
         viewHolder.relationsLayoutSubBinding.setModel(model);
+        viewHolder.relationsLayoutSubBinding.setVisibility(relationsModel.root==model.getId());
         viewHolder.relationsLayoutSubBinding.container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onDataListener.onDataBack(model.getId());
+                if (relationsModel.root==model.getId()) ((IMainActivity)context).getSummaryInfo(view,8);
+                onDataListener.onDataBack(model.getId(),view);
             }
         });
         viewHolder.relationsLayoutSubBinding.executePendingBindings();

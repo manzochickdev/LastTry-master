@@ -9,9 +9,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+
 import xyz.manzodev.lasttry.DatabaseHandle;
 import xyz.manzodev.lasttry.Model.Address;
 import xyz.manzodev.lasttry.Model.Model;
+import xyz.manzodev.lasttry.Model.Relation;
 import xyz.manzodev.lasttry.R;
 import xyz.manzodev.lasttry.databinding.AddeditLayoutInfoBinding;
 import xyz.manzodev.lasttry.databinding.AddeditLayoutRelationshipBinding;
@@ -79,7 +82,9 @@ public class CustomPagerAdapter extends PagerAdapter {
         addeditLayoutRelationshipBinding.tvTitle.setVisibility(View.GONE);
         addeditLayoutRelationshipBinding.viewHolder.setVisibility(View.GONE);
 
-        addeditLayoutRelationshipBinding.setVm(new RelationshipVM(id,context));
+        RelationshipVM relationshipVM = new RelationshipVM(id,context);
+        relationshipVM.getRelationshipData();
+        addeditLayoutRelationshipBinding.setVm(relationshipVM);
     }
 
     @Override
@@ -97,6 +102,17 @@ public class CustomPagerAdapter extends PagerAdapter {
     public void setIsEdit(){
         addeditLayoutInfoBinding.getVm().setEdit(true);
         addeditLayoutRelationshipBinding.getVm().setEdit(true);
+    }
+
+    public void handleUpdate(){
+        InfoVM infoVM = addeditLayoutInfoBinding.getVm();
+        ArrayList<Relation> relations = addeditLayoutRelationshipBinding.getVm().getRelationshipData();
+
+        Model model = infoVM.getModel();
+        databaseHandle.updatePerson(model);
+
+        Address address = infoVM.getAddress();
+        //todo continue
     }
 
 

@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
     <data>
+        <import type="android.view.View"></import>
+        <variable
+            name="visibility"
+            type="Boolean"></variable>
         <variable
             name="model"
             type="xyz.manzodev.lasttry.Model.Model"></variable>
@@ -21,7 +25,8 @@
             android:layout_width="66dp"
             android:layout_height="66dp">
             <ImageView
-                android:visibility="visible"
+
+                android:visibility="@{visibility ? View.VISIBLE : View.GONE}"
                 android:src="@drawable/rounded_accent"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />

@@ -94,6 +94,15 @@ public class DatabaseHandle extends SQLiteOpenHelper {
         db.execSQL(q1);
         db.execSQL(q2);
         db.execSQL(q3);
+        notifyDBChange();
+    }
+
+    public void updatePerson(Model model){
+        SQLiteDatabase db = getWritableDatabase();
+        String q = "update people set name='"+model.getName()+"'," +
+                "dispRela='"+model.getDispRela()+"' " +
+                "where id="+model.getId()+";";
+        db.execSQL(q);
     }
 
     public Model getPerson(int id){
@@ -135,6 +144,7 @@ public class DatabaseHandle extends SQLiteOpenHelper {
         String q2 = "insert into relative values ("+m2.getId()+","+ m1.getId()+",'"+m1.getName()+"',"+(2-relation)+")";
         db.execSQL(q);
         db.execSQL(q2);
+        notifyDBChange();
     }
 
     public void removeRelation(int id1,int id2){
@@ -203,6 +213,14 @@ public class DatabaseHandle extends SQLiteOpenHelper {
         String q = "insert into address values ("+id+","+address.latlng.latitude+","+address.latlng.longitude+",'"+address.getTextAddr()+"');";
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL(q);
+        notifyDBChange();
+    }
+
+    public void updateAddress(Address address,int id){
+        SQLiteDatabase db = getWritableDatabase();
+        String q = "update address set latitude="+address.latlng.latitude+",longitude="+address.latlng.longitude+",mAddress='"+address.getTextAddr()+"' where main_id="+id+";";
+        db.execSQL(q);
+        notifyDBChange();
     }
 
     public Address getAddress(int id){

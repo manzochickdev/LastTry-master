@@ -19,25 +19,26 @@
             android:layout_width="@dimen/civ"
             android:layout_height="@dimen/civ" />
         <TextView
+            android:gravity="center"
             android:maxLines="2"
             android:id="@+id/tv_name"
             android:textSize="12sp"
-            android:text="@{rela.model.name}"
-            android:layout_marginTop="8dp"
+            android:text="@{rela.model.name!=null ? rela.model.name : @string/person_holder}"
+            android:layout_marginTop="4dp"
             android:layout_centerHorizontal="true"
             android:layout_below="@id/civ_profile"
-            android:layout_width="wrap_content"
+            android:layout_width="66dp"
             android:layout_height="wrap_content" />
         <TextView
+            android:gravity="center"
             android:padding="4dp"
             android:background="@drawable/curved_accent"
             android:textSize="10sp"
             android:textColor="@color/colorWhite"
-            android:layout_marginTop="-4dp"
-            android:text="@{rela.relationship}"
+            android:text="@{rela.relationship!=null ? rela.relationship : @string/relationship}"
             android:layout_centerHorizontal="true"
             android:layout_below="@id/tv_name"
-            android:layout_width="wrap_content"
+            android:layout_width="66dp"
             android:layout_height="wrap_content" />
         <ImageView
             android:id="@+id/iv_remove"

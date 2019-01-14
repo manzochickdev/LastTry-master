@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
     <data>
+        <import type="android.view.View"></import>
+        <variable
+            name="visibility"
+            type="Boolean"></variable>
         <variable
             name="model"
             type="xyz.manzodev.lasttry.Model.Model"></variable>
@@ -23,6 +27,15 @@
             android:layout_marginLeft="12dp"
             android:layout_toRightOf="@id/iv_profile"
             android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <ImageView
+            android:visibility="@{visibility ? View.VISIBLE : View.GONE}"
+            android:layout_marginRight="12dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:tint="@color/colorAccent"
+            android:src="@drawable/ic_check_circle_black_24dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </RelativeLayout>

@@ -42,7 +42,7 @@ public class RelationshipVM extends BaseObservable {
                 if (r.model!=null) listId.add(r.model.id);
             }
             holder = relation;
-            ((IMainActivity)context).getRelationshipPicker(this,listId);
+            ((IMainActivity)context).getRelationshipPicker(this,listId,relation);
         }
 
         @Override

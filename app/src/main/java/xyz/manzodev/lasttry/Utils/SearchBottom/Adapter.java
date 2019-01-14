@@ -18,6 +18,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     ArrayList<Model> models;
     Context context;
     SearchBottomFragment.OnDataListener onDataListener;
+    int clicked=-1;
 
     public Adapter(ArrayList<Model> models, Context context, SearchBottomFragment.OnDataListener onDataListener) {
         this.models = models;
@@ -34,11 +35,15 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, final int i) {
-        viewHolder.searchBottomLayoutItemBinding.setModel(models.get(i));
+        final Model model = models.get(i);
+        viewHolder.searchBottomLayoutItemBinding.setModel(model);
+        viewHolder.searchBottomLayoutItemBinding.setVisibility(clicked==model.getId());
         viewHolder.searchBottomLayoutItemBinding.container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onDataListener.onModelBack(models.get(i));
+                onDataListener.onModelBack(model);
+                clicked=model.getId();
+                notifyDataSetChanged();
             }
         });
         viewHolder.searchBottomLayoutItemBinding.executePendingBindings();

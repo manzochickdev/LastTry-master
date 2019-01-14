@@ -4,7 +4,6 @@ import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,7 +37,17 @@ public class SubAdapter extends RecyclerView.Adapter<SubAdapter.ViewHolder> {
         viewHolder.peopleLayoutSubBinding.container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((IMainActivity) context).onEditPersonListener(models.get(i).getId());
+                //((IMainActivity) context).onEditPersonListener(models.get(i).getId());
+                ((IMainActivity) context).getSummaryInfo(view, 64);
+//                PopupWindow popup = new PopupWindow(context);
+//                View layout = LayoutInflater.from(context).inflate(R.layout.layout_popup_summary_info,null,false);
+//                popup.setContentView(layout);
+//                popup.setOutsideTouchable(true);
+//                popup.setFocusable(true);
+//
+//                popup.showAtLocation(view, Gravity.TOP,0,0);
+//                Log.d(TAG, "onClick: OK");
+
             }
         });
         viewHolder.peopleLayoutSubBinding.executePendingBindings();
